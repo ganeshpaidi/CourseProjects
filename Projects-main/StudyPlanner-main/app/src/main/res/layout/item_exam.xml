@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center_horizontal"
+    app:cardUseCompatPadding="true"
+    app:cardCornerRadius="6dp"
+    android:elevation="4dp"
+    android:layout_margin="5dp"
+    >
+
+    <RelativeLayout
+        android:layout_width="381dp"
+        android:layout_height="145dp"
+        android:layout_margin="10dp"
+        android:background="#FFFFFF"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/displayexamname"
+            android:layout_width="226dp"
+            android:layout_height="wrap_content"
+            android:text="Assignment NAME"
+            android:textColor="@color/teal_200"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/displayexam"
+            android:layout_width="300dp"
+            android:layout_height="53dp"
+            android:layout_below="@+id/displayexamname"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="-1dp"
+            android:layout_marginTop="1dp"
+            android:scrollbars="vertical"
+            android:text="Discription"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/displayexamdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/displayexam"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="47dp"
+            android:layout_marginBottom="7dp"
+            android:text="TextView" />
+
+        <ImageView
+            android:id="@+id/del_exam"
+            android:layout_width="68dp"
+            android:layout_height="77dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="325dp"
+            android:layout_marginTop="3dp"
+            android:src="@drawable/ic_delete" />
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>
