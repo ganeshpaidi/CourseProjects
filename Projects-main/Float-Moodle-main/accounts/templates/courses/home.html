@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% block title %}Courses{% endblock %}
+{% block H %} 
+    {% load extras %}
+{% endblock %}
+
+{% block content %}
+
+<div class="Conth" style="height: 80px; width: 60%; align-self: center; margin: 20px 20%;  border-radius: 30px;     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+
+    <a href="{% url 'CourseCreate' %}" class="Conth hov3 ContL" style="width: 35%; height: 100%; display: block; text-decoration: none;">
+      <h2 style="margin-left: 0%; margin-top: 8%;">Create</h2>
+    </a>
+
+    <a href="{% url 'dashboard' %}" class="Conth hov4 ContL" style="width: 30%; height: 100%; display: block; text-decoration: none; ">
+        <h2 style="margin-left: 0%; margin-top: 8%;">Dashboard</h2>
+      </a>
+
+    <a href="{% url 'CourseJoin' %}" class="Conth hov1 ContL" style="width: 35%; height: 100%; display: block; text-decoration: none; ">
+      <h2 style="margin-left: 0%; margin-top: 8%;">Join</h2>
+    </a>
+
+</div>
+
+
+<div style="text-align: center; width: 100%; height: auto; margin-bottom: 4px;">
+    <h1 style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:rgb(89, 79, 231) ; align-self:  center; margin: 0px;">COURSES</h1>
+</div>
+
+
+<div class="Cbox" style="height: fit-content; width: 100%; border-width: 5px 0px; display: flex; background-color: rgb(220, 234, 247);">
+
+    <div class="Cbox" style="width: 80%; height: auto; ">
+
+        <div style=" width: 100%; height: auto; margin-bottom: 4px;">
+            <h1 style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:rgb(89, 79, 231) ; align-self:  left; margin: 0px; margin-left: 10px;">Instructor</h1>
+        </div>
+        <div class="Conth" style="background-color: transparent;">
+            {% for course in icourses %}
+            <a  href = "{% url 'coursepage' course.pk %}" class="course" style="text-decoration: none; display: block;">
+                <div class="Cbox Cbox1" style="width: 100%; height: 40%; border-width: 0px 0px 4px 0px ; text-align: center; display: inline-block;">
+
+                    <div class="square" style="margin: 15px 75px;"></div>
+
+                </div>
+
+                <div class="Cbox Cbox2 hov5" style="width: 100%; height: 20%; border-width: 0px 0px 0px 0px ; text-align: center; display: inline-block; padding: 5px 0px">
+                    <h2 style="margin: 0px; padding: 0px; margin-top: 3px;">{{ course.name }}</h2>
+                </div>
+
+                <div style="width: 100%; height: 10%; border-width: 0px ; background-color: rgb(194, 197, 196);">
+                  
+                  <div class="Cbox1 Cbox" style=" height: 100%; margin: 0px; background-color: rgb(234, 238, 23); border-width: 0px; width: {{ Perc_I|index:forloop.counter0 }}"></div>
+        
+                </div>
+                <h4 style="margin: 0px; color:black;">{{ Perc_I|index:forloop.counter0 }} completed</h4>
+            </a>
+            {% endfor %}
+        </div>
+
+        <div style=" width: 100%; height: auto; margin-bottom: 4px;">
+            <h1 style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:rgb(89, 79, 231) ; align-self:  left; margin: 0px; margin-left: 10px;">Student</h1>
+        </div>
+        <div class="Conth" style="background-color: transparent;">
+            {% for course in scourses %}
+            <a  href = "{% url 'coursepage' course.pk %}" class="course" style="text-decoration: none; display: block;">
+                <div class="Cbox Cbox1 Cbox6" style="width: 100%; height: 40%; border-width: 0px 0px 4px 0px ; text-align: center; display: inline-block;">
+            
+                    <div class="circle" style="margin: 15px 75px;"></div>
+            
+                </div>
+            
+                <div class="Cbox Cbox2 hov5" style="width: 100%; height: 20%; border-width: 0px; text-align: center; display: inline-block; padding: 6px 0px;">
+                    <h2 style="margin: 0px; padding: 0px; margin-top: 3px;">{{ course.name }}</h2>
+                </div>
+                
+                <div style="width: 100%; height: 10%; border-width: 0px ; background-color: rgb(194, 197, 196);">
+                  
+                    <div class="Cbox1 Cbox" style=" height: 100%; margin: 0px; background-color: red; border-width: 0px; width: {{ Perc_S|index:forloop.counter0 }}"></div>
+        
+                </div>
+                <h4 style="margin: 0px; color: black;">{{ Perc_S|index:forloop.counter0 }} completed</h4>
+            </a>
+            {% endfor %}
+        </div>
+
+
+        <div style=" width: 100%; height: auto; margin-bottom: 4px;">
+            <h1 style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:rgb(89, 79, 231) ; align-self:  left; margin: 0px; margin-left: 10px;">TA</h1>
+        </div>
+        <div class="Conth" style="background-color: transparent;">
+            {% for course in Tcourses %}
+            <a  href = "{% url 'coursepage' course.pk %}" class="course" style="text-decoration: none; display: block;">
+              <div class="Cbox Cbox1 Cbox7" style="width: 100%; height: 40%; border-width: 0px 0px 4px 0px ; text-align: center; display: inline-block;">
+        
+                  <div class="triangle-up" style="margin: 15px 75px; background-color: inherit; position: absolute;">
+                  </div>
+        
+                  <div class="triangle-up-small" style="margin: 30.5px 86px; position: absolute;">
+                  </div>
+        
+              </div>
+              
+              <div class="Cbox Cbox2 hov5" style="width: 100%; height: 20%; border-width: 0px 0px 0px 0px ; text-align: center; display: inline-block; padding: 5px 0px">
+                  <h2 style="margin: 0px; padding: 0px; margin-top: 3px;">{{ course.name }}</h2>
+              </div>
+        
+              <div style="width: 100%; height: 10%; border-width: 0px ; background-color: rgb(194, 197, 196); display: flex;">
+                
+                <div class="Cbox1 Cbox" style=" height: 100%; margin: 0px; background-color:rgb(47, 236, 41); border-width: 0px; width: {{ Perc_T|index:forloop.counter0 }}"></div>
+        
+            </div>
+            <h4 style="color:black; margin: 0px;">{{ Perc_T|index:forloop.counter0 }} completed</h4>
+            </a>
+            {% endfor %}
+        </div>
+
+    </div>
+
+
+    <div class="Cbox" style="width: 20%; height: auto; border-left-width: 5px ; background-color: rgb(221, 203, 180);">
+
+        <div class="sideheadfont hov5" style="color: rgb(43, 7, 14); font-size:x-large; padding: 10px; border-width: 0px 5px 5px 5px;">
+            <h1 style="margin: 0px;">TO-DO</h1>
+        </div>
+
+        <div class="sideheadfont font1 hov6">
+            <h1>Submissions</h1>
+        </div>
+
+        {% for assign in Stodo %}
+        <a href = "{% url 'assign_page' assign.course.pk assign.pk %}" class="sidebox" style="height: auto; width: auto; text-align: center; padding: 2px; margin-bottom: 5px; text-decoration: none;display: block;">
+            <h1 class="font2">{{ assign.name }}</h1>
+            <h2 class = "font3">Course: {{ assign.course.name }}</h2>
+            <h3 class = "font4">{{ assign.deadline }}</h3>
+        </a>
+        {% endfor %}
+
+        <div class="sideheadfont font1 hov7">
+            <h1>Grading</h1>
+        </div>
+
+        {% for assign in Itodo %}
+        <a href = "{% url 'assign_page' assign.course.pk assign.pk %}" class="sidebox" style="height: auto; width: auto; text-align: center; padding: 2px; margin-bottom: 5px; text-decoration: none; display: block;">
+            <h1 class="font2 font8">{{ assign.name }}</h1>
+            <h2 class = "font3 font6">Course: {{ assign.course.name }}</h2>
+            <h3 class = "font4 font7">{{ assign.deadline }}</h3>
+        </a>
+        {% endfor %}
+
+        {% for assign in TAtodo %}
+        <a href = "{% url 'assign_page' assign.course.pk assign.pk %}" class="sidebox" style="height: auto; width: auto; text-align: center; padding: 2px; margin-bottom: 5px; text-decoration: none; display: block;">
+            <h1 class="font2 font5">{{ assign.name }}</h1>
+            <h2 class = "font3 font6">Course: {{ assign.course.name }}</h2>
+            <h3 class = "font4 font7">{{ assign.deadline }}</h3>
+        </a>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+
+
+
+{% endblock %}

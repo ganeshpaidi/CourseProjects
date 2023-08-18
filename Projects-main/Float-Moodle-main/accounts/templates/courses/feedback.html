@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block title %}Feedback{% endblock %}
+
+{% block H %}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+
+
+<style>
+ .textarea {
+  width: 100%;
+  height: 200px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 15px;
+  background-color: #f8f8f8;
+  resize: none;
+}
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+<br>
+
+<div class="Conth" style="height: 80px; width: 60%; align-self: center; margin: 20px 20%;  border-radius: 30px;     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+
+
+  <a href="{% url 'CourseHome'  %}" class="Conth hov3 ContL hov8" style="width: 20%; height: 100%; display: block; text-decoration: none;">
+      <h2 style="margin-left: 0%; margin-top: 4%; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 40px;">Courses</h2>
+  </a>
+
+  <a href="{% url 'coursepage' course.pk %}" class="Conth hov1 ContL" style="width: 25%; height: 100%; display: block; text-decoration: none; ">
+  <h2 style="margin-left: 0%; margin-top: 5%; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 40px;" >{{ course.name }}</h2>
+  </a>
+
+  <a href="{% url 'assign_page' course.pk assign.pk %}" class="Conth hov4 ContL" style="width: 25%; height: 100%; display: block; text-decoration: none; ">
+      <h2 style="margin-left: 0%; margin-top: 6%; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 30px;">Assignment</h2>
+  </a> 
+
+  <a href="{% url 'submissions' course.pk assign.pk %}" class="Conth hov6 ContL" style="width: 30%; height: 100%; display: block; text-decoration: none; ">
+    <h2 style="margin-left: 0%; margin-top: 6%; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 30px;">Submissions</h2>
+</a> 
+
+
+
+</div>
+
+
+
+<br>
+
+<div class="f1" style="text-align: center; width: 100%;"><h1><div style="display: inline; color: rgb(131, 115, 115);">Assignment:</div>  {{ assign.name }}  <div style="display: inline; color: rgb(50, 170, 250);">[ {{ assign.maxmarks }} marks ]</div></h1></div>
+
+<div style="text-align: center;">
+<h2 style="color: rgb(0, 0, 0);">DEADLINE:  <div style="display: inline; color: crimson;">{{ assign.deadline }}</div></h2>
+</div>
+<div class="f1" style="text-align: center; width: 100%;"><h2><div style="display: inline; color: rgb(131, 115, 115);">Weightage:</div>  {{ assign.weightage }}% </h2></div>
+
+<br>
+
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th >Student</th>
+                    <th >File Name and Link</th>
+                    <th>Correction Status</th>
+                    <th>Grade</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>{{sub.user.username}}</th>
+                    <th><a download href="{{sub.file.url}}" style="color: blueviolet;">{{sub.file_name}}</a></th>
+                    {% if sub.corrected == "YES" %}
+                    <th style="color: rgb(36, 197, 31);">{{sub.corrected}}</th>
+                    {% else %}
+                    <th style="color: red;">{{sub.corrected}}</th>
+                    {% endif %}
+                    <th>{{ sub.grade }}</th>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+    </div>
+</div>
+
+<div style="text-align: center;">
+<form method="post">
+    {% csrf_token %}
+    {{form.non_field_errors}}
+    <div class="fieldWrapper">
+        {{ form.feedback.errors }}
+        <label for="{{ form.feedback.id_for_label}}" style="font-weight: 500;"><h2>Feedback</h2></label><br>
+        {{ form.feedback }}
+        <br>
+        {{ form.grade.errors }}
+        <label for="{{ form.grade.id_for_label}}" ><h1>Grade</h1></label><br>
+        {{ form.grade }}
+    </div>
+    <br>
+    <br>
+    <br>
+    <button type="submit" class="B1 button2">Submit</button>
+  </form>
+</div>
+
+
+
+{% endblock %}

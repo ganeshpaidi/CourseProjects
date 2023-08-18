@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Join Course{% endblock %}
+
+{% block content %}
+
+<div class="Conth" style="height: 80px; width: 60%; align-self: center; margin: 20px 20%;  border-radius: 30px;     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+
+
+  <a href="{% url 'dashboard' %}" class="Conth hov3 ContL hov8" style="width: 50%; height: 100%; display: block; text-decoration: none;">
+      <h2 style="margin-left: 0%; margin-top: 6%;">Dashboard</h2>
+  </a>
+
+
+  <a href="{% url 'CourseHome' %}" class="Conth hov4 ContL" style="width: 50%; height: 100%; display: block; text-decoration: none; ">
+      <h2 style="margin-left: 0%; margin-top: 6%;">Courses Home</h2>
+  </a> 
+
+</div>
+<br>
+<div style="text-align: center;">
+    <h1>Join a Course here</h1>
+    {% if wrong %}
+    <h1 style="color: orangered;"> Course Does Not Exist</h1>
+    {% endif %}
+</div>  
+
+
+<div class = "login">
+    <h1 style="color: rgb(228, 243, 21);">JOIN COURSE</h1>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="B1 button2">Join</button>
+    </form>
+</div>
+
+{% endblock %}

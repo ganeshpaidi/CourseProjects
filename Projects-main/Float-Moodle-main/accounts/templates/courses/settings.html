@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}TA permissions{% endblock %}
+
+{% block H %}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+
+{% endblock %}
+
+{% block content %}
+
+
+<div class="Conth" style="height: 80px; width: 60%; align-self: center; margin: 20px 20%;  border-radius: 30px;     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+
+
+    <a href="{% url 'dashboard' %}" class="Conth hov3 ContL hov8" style="width: 25%; height: 100%; display: block; text-decoration: none; ">
+        <h2 style="margin-left: 0%; margin-top: 8%;">Dashboard</h2>
+    </a>
+
+    <a href="{% url 'coursepage' course.pk %}" class="Conth hov1 ContL" style="width: 25%; height: 100%; display: block; text-decoration: none; ">
+    <h2 style="margin-left: 0%; margin-top: 5%; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 40px;" >{{ course.name }}</h2>
+    </a>
+
+    <a href="{% url 'participants' course.pk %}" class="Conth hov1 ContL" style="width: 25%; height: 100%; display: block; text-decoration: none; ">
+        <h2 style="margin-left: 0%; margin-top: 5%; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 40px;" >Participants </h2>
+    </a>
+
+    <a href="{% url 'CourseHome' %}" class="Conth hov4 ContL" style="width: 25%; height: 100%; display: block; text-decoration: none; ">
+        <h2 style="margin-left: 0%; margin-top: 8%;">Courses</h2>
+    </a> 
+
+</div>
+
+
+<br>
+
+<div class="f1" style="text-align: center; width: 100%;"><h1><div style="display: inline; color: rgb(131, 115, 115);">TA name:</div>  {{ ta.username }}</h1></div>
+<hr>
+<div style="text-align: center;">
+<br>
+<h1>Permissions:</h1>
+<br>
+{% if P.assign_create == 'YES' %}
+<h2 style="color: rgb(0, 0, 0);">Create assignments? <div style="display: inline; color: rgb(44, 238, 26);">YES</div></h2>
+{% else %}
+<h2 style="color: rgb(0, 0, 0);">Create assignments?  <div style="display: inline; color: crimson;">NO</div></h2>
+{% endif %}
+
+
+{% if P.forum_create == 'YES' %}
+<h2 style="color: rgb(0, 0, 0);">Create Forums? <div style="display: inline; color: rgb(44, 238, 26);">YES</div></h2>
+{% else %}
+<h2 style="color: rgb(0, 0, 0);">Create Forums?  <div style="display: inline; color: crimson;">NO</div></h2>
+{% endif %}
+
+{% if P.add_students == 'YES' %}
+<h2 style="color: rgb(0, 0, 0);">Add Students? <div style="display: inline; color: rgb(44, 238, 26);">YES</div></h2>
+{% else %}
+<h2 style="color: rgb(0, 0, 0);">Add Students?  <div style="display: inline; color: crimson;">NO</div></h2>
+{% endif %}
+
+</div>
+
+<br>
+<br>
+<hr>
+
+<div style="text-align: center;">
+
+    <form method="post" enctype="multipart/form-data" action="" >
+        {% csrf_token %}
+        <h2 style="color: rgb(24, 46, 241);">Modify Permissions</h2>
+        <br>
+        {% for field in form %}
+            <div class="fieldWrapper">
+            <p class = "field">{{ field.label_tag }}         {{field}}</p>
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="button4">Change</button>
+    </form>
+</div>
+
+{% endblock %}

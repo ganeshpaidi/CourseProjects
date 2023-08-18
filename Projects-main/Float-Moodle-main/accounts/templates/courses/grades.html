@@ -1,0 +1,431 @@
+{% extends 'base.html' %}
+
+{% block title %}Grades{% endblock %}
+{% block H %}
+{% load extras %}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+
+
+{% endblock %}
+
+{% block content %}
+
+
+
+<div class="Conth" style="height: 80px; width: 60%; align-self: center; margin: 20px 20%;  border-radius: 30px;     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+
+
+    <a href="{% url 'dashboard' %}" class="Conth hov3 ContL hov8" style="width: 30%; height: 100%; display: block; text-decoration: none;">
+        <h2 style="margin-left: 0%; margin-top: 8%;">Dashboard</h2>
+    </a>
+
+    <a href="{% url 'coursepage' course.pk %}" class="Conth hov1 ContL" style="width: 30%; height: 100%; display: block; text-decoration: none; ">
+    <h2 style="margin-left: 0%; margin-top: 5%; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 40px;" >{{ course.name }}</h2>
+    </a>
+
+    <a href="{% url 'CourseHome' %}" class="Conth hov4 ContL" style="width: 40%; height: 100%; display: block; text-decoration: none; ">
+        <h2 style="margin-left: 0%; margin-top: 6%;">Courses Home</h2>
+    </a> 
+
+</div>
+
+
+<div style="text-align: center;">
+<h1 style="font-size: 40px;">Grades</h1>
+</div>
+
+{% if INSrTA %}
+
+
+<div class="container mt-5" style="background-color: rgb(255, 255, 255);">
+
+    <h1>MarkSheet | Statistics</h1>
+   
+    <div class="f1" style="text-align: center; width: 100%;"><h2><div style="display: inline; color: rgb(131, 115, 115);">Current total Mean:</div>  {{ TC|index:-3 }}  <div style="display: inline; color: rgb(50, 170, 250);">[ {{ TC|index:-4 }} ]</div></h2></div>
+    <div class="f1" style="text-align: center; width: 100%;"><h2><div style="display: inline; color: rgb(131, 115, 115);">Current total Std Deviation:</div>  {{ TC|index:-2 }}</h2></div>
+    <div class="f1" style="text-align: center; width: 100%;"><h2><div style="display: inline; color: rgb(131, 115, 115);">Current total Variance:</div>  {{ TC|index:-1 }}</h2></div>
+    
+
+    <br>
+    <div style="text-align: center; color: darkblue;">
+        <h2>Adjusted by weightage</h2>
+       </div>
+
+       <div class="row">
+        <div class="col-12">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th >S/N</th>
+                    <th >Student</th>
+                    {% for d in assigns %}
+                    <th><a href = "{% url 'submissions' course.pk d.pk %}">{{ d.name }}</a> [{{d.maxmarks}}]</th>
+                    {% endfor %}
+                    <th>Course Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th></th>
+                    <th style="color: brown;">Weightage</th>
+                    {% for d in assigns %}
+                    <th>{{ d.weightage }}%</th>
+                    {% endfor %}
+                    <th style="color: brown;">{{ TC|index:-4 }}%</th>
+
+                </tr>
+                  {% for d in CorrData %}
+                  <tr>
+                      <th>{{ forloop.counter }}</th>
+                        {% for field in d %}
+                            <th>{{ field }}</th>
+                        {% endfor %}
+                        <th>{{TC | index:forloop.counter0 }}</th>
+                  </tr>
+
+                  {% endfor %}
+                  <tr>
+                  </tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                  <tr>
+                    <th></th>
+                    <th style="color: brown;">Mean</th>
+                    {% for a in IC %}
+                    <th>{{ a.0 }}</th>
+                    {% endfor %}
+                    <th style="color: blue;">{{ TC|index:-3 }}</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th style="color: brown;">Std Deviation</th>
+                    {% for a in IC %}
+                    <th>{{ a.1 }}</th>
+                    {% endfor %}
+                    <th style="color: blue;">{{ TC|index:-2 }}</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th style="color: brown;">Variance</th>
+                    {% for a in IC %}
+                    <th>{{ a.2 }}</th>
+                    {% endfor %}
+                    <th style="color: blue;">{{ TC|index:-1 }}</th>
+                </tr>
+                </tbody>
+
+              </table>
+        </div>
+    </div>
+<br>
+<br>
+    <h5>-1: means Not GRADED, "--" means Not SUBMITTED    [both will be counted as 0 marks ]</h5>
+<br>
+<br>
+    <div style="text-align: center; color: darkblue;">
+        <h2>Original</h2>
+       </div>
+    
+        <div class="row">
+            <div class="col-12">
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th >S/N</th>
+                        <th >Student</th>
+                        {% for d in assigns %}
+                        <th><a href = "{% url 'submissions' course.pk d.pk %}">{{ d.name }}</a> [{{d.maxmarks}}]</th>
+                        {% endfor %}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for d in RawData %}
+                      <tr>
+                          <th>{{ forloop.counter }}</th>
+                            {% for field in d %}
+                                <th>{{ field }}</th>
+                            {% endfor %}
+                      </tr>
+                      {% endfor %}
+                      <tr>
+                    </tr>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                    <tr>
+                      <th></th>
+                      <th style="color: brown;">Mean</th>
+                      {% for a in IU %}
+                      <th>{{ a.0 }}</th>
+                      {% endfor %}
+                  </tr>
+                  <tr>
+                      <th></th>
+                      <th style="color: brown;">Std Deviation</th>
+                      {% for a in IU %}
+                      <th>{{ a.1 }}</th>
+                      {% endfor %}
+                  </tr>
+                  <tr>
+                      <th></th>
+                      <th style="color: brown;">Variance</th>
+                      {% for a in IU %}
+                      <th>{{ a.2 }}</th>
+                      {% endfor %}
+                  </tr>
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+
+    <h1>Course Progress</h1>
+
+    <div class="row">
+        <div class="col-12">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th >S/N</th>
+                    <th >Student</th>
+                    {% for d in assigns %}
+                    <th><a href = "{% url 'submissions' course.pk d.pk %}">{{ d.name }}</a> [{{d.maxmarks}}]</th>
+                    {% endfor %}
+                  </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th></th>
+                    <th style="color: brown;">Cumulative Weightage</th>
+                    {% for d in Cumls|index:-4 %}
+                    <th>{{ d }}%</th>
+                    {% endfor %}
+
+                </tr>
+                  {% for d in Cumls|slice:NumS %}
+                  <tr>
+                      <th>{{ forloop.counter }}</th>
+                      <th>{{ Snames|index:forloop.counter0 }}</th>
+                        {% for a in d %}
+                            <th>{{ a }}</th>
+                        {% endfor %}
+                  </tr>
+
+                  {% endfor %}
+                  <tr>
+                  </tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                  <tr>
+                    <th></th>
+                    <th style="color: brown;">Mean</th>
+                    {% for a in Cumls|index:-3 %}
+                    <th>{{ a }}</th>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <th></th>
+                    <th style="color: brown;">Std Deviation</th>
+                    {% for a in Cumls|index:-2 %}
+                    <th>{{ a }}</th>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <th></th>
+                    <th style="color: brown;">Variance</th>
+                    {% for a in Cumls|index:-1 %}
+                    <th>{{ a }}</th>
+                    {% endfor %}
+                </tr>
+                </tbody>
+              </table>
+        </div>
+    </div>
+    
+
+</div>
+
+<div style="text-align: center;"><h1>see below⬇️ for Graphs</h1></div>
+<br>
+<br>
+
+    <div style="text-align: center;"><h1>Histogram of course totals currently</h1></div>
+    <br>
+    <div style="text-align: center; margin: 20px 200px;">
+        <img src="data:image/png;base64,{{histT}}" alt="Histogram of Marks" width=600 height=auto />
+    </div>
+    <br>
+
+
+    <div style="text-align: center;"><h1>Comparison of Assignments</h1></div>
+    <br>
+    <div style="text-align: center; margin: 5px 150px;">
+        <img src="data:image/png;base64,{{graphAM}}" alt="Histogram of Marks" width=600 height=auto />
+        <img src="data:image/png;base64,{{graphAS}}" alt="Histogram of Marks" width=600 height=auto />
+    </div>
+
+    <div style="text-align: center; margin: 5px 150px;">
+        <img src="data:image/png;base64,{{graphAV}}" alt="Histogram of Marks" width=600 height=auto />
+        <img src="data:image/png;base64,{{graphAll}}" alt="Histogram of Marks" width=600 height=auto />
+    </div>
+    <br>
+
+    <div style="text-align: center;"><h1>Course Progress till Now</h1></div>
+
+    <br>
+    <div style="text-align: center; margin: 5px 150px;">
+        <img src="data:image/png;base64,{{CumAM}}" alt="Histogram of Marks" width=600 height=auto />
+        <img src="data:image/png;base64,{{CumAS}}" alt="Histogram of Marks" width=600 height=auto />
+    </div>
+
+    <div style="text-align: center; margin: 5px 150px;">
+        <img src="data:image/png;base64,{{CumAV}}" alt="Histogram of Marks" width=600 height=auto />
+        <img src="data:image/png;base64,{{CumAll}}" alt="Histogram of Marks" width=600 height=auto />
+    </div>
+    <br>
+    <div style="text-align: center; margin: 5px 150px;">
+        <img src="data:image/png;base64,{{CumPerc}}" alt="Histogram of Marks" width=600 height=auto />
+    </div>
+    <br>
+
+
+
+
+
+{% else %}
+    
+    <div class="container mt-5" style="background-color: rgb(255, 255, 255);">
+        <div class="row">
+            <div class="col-12">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th >S/N</th>
+                        <th >Assignment (link)</th>
+                        <th >Deadline</th>
+                        <th>Status</th>
+                        <th>Grade</th>
+                        <th>Percentage</th>
+                        <th>Weightage</th>
+                        <th>Contribution</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for d in Marks %}
+                    <tr>
+                        <th>{{forloop.counter}}</th>
+                        <th ><a href="{% url 'assign_page' course.pk d.0.pk %}" >{{d.0.name }}</a></th>
+
+                        {% if not d.1 == "OVER" %}
+                        <th style="color: rgb(36, 197, 31);">{{d.1}}</th>
+                        {% else %}
+                        <th style="color: red;">{{d.1}}</th>
+                        {% endif %}
+
+
+                        {% if d.3 == "GRADED" %}
+                        <th style="color: rgb(36, 197, 31);">{{d.3}}</th>
+                        {% else %}
+                        <th style="color: red;">{{d.3}}</th>
+                        {% endif %}
+
+                        <th>{{ d.2 }}/{{d.0.maxmarks}}</th>
+                        <th>{{d.4}}%</th>
+
+                        <th>{{ d.0.weightage }}%</th>
+                        <th>{{ d.5 }}</th>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    </tr>
+                    <thead>
+                        <tr>
+                        <th ></th>
+                        <th ></th>
+                        <th ></th>
+                        <th></th>
+                        <th></th>
+                        <th><h4 style="color: brown;">Overall% </h4></th>
+                        <th><h4 style="color: brown;">Total till Now</h4></th>
+                        <th><h4 style="color: brown;">Grade till Now</h4></th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th><h2>{{total.0}}%</h2></th>
+                        <th><h2>{{total.1}}</h2></th>
+                        <th><h2>{{total.2}}/{{total.1}}</h2></th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    
+        {% if warn == 'YES' %}
+        <div style="text-align: center; margin-top: 2px;">
+        <h1 style="color: red; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-weight: 700;">U are falling much behind class average!!</h1>
+        </div>
+        {% endif %}
+
+    </div>
+
+<br>
+<br>
+<br>
+<hr>
+
+<div style="text-align: center;"><h1>see below⬇️ for Graphs</h1></div>
+<br>
+<br>
+
+<div style="text-align: center;"><h1>Assignment comparison w.r.t Marks & %</h1></div>
+<br>
+<div style="text-align: center; margin: 20px 120px;">
+    <img src="data:image/png;base64,{{GM}}" alt="Histogram of Marks" width=600 height=auto />
+    <img src="data:image/png;base64,{{GP}}" alt="Histogram of Marks" width=600 height=auto />    
+</div>
+<br>
+
+<div style="text-align: center;"><h1>Course Progress w.r.t marks and %</h1></div>
+
+<br>
+<div style="text-align: center; margin: 20px 120px;">
+    <img src="data:image/png;base64,{{HM}}" alt="Histogram of Marks" width=600 height=auto />
+    <img src="data:image/png;base64,{{HP}}" alt="Histogram of Marks" width=600 height=auto />    
+</div>
+<br>
+
+
+
+
+
+{% endif %}
+
+
+{% endblock %}

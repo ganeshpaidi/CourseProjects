@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+{% block title %}Submissions{% endblock %}
+{% block H %}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+
+{% endblock %}
+
+{% block content %}
+<br>
+
+<div class="Conth" style="height: 80px; width: 60%; align-self: center; margin: 20px 20%;  border-radius: 30px;     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+
+
+  <a href="{% url 'CourseHome'  %}" class="Conth hov3 ContL hov8" style="width: 30%; height: 100%; display: block; text-decoration: none;">
+      <h2 style="margin-left: 0%; margin-top: 4%; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 40px;">Courses</h2>
+  </a>
+
+  <a href="{% url 'coursepage' course.pk %}" class="Conth hov1 ContL" style="width: 30%; height: 100%; display: block; text-decoration: none; ">
+  <h2 style="margin-left: 0%; margin-top: 5%; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 40px;" >{{ course.name }}</h2>
+  </a>
+
+  <a href="{% url 'assign_page' course.pk assign.pk %}" class="Conth hov4 ContL" style="width: 40%; height: 100%; display: block; text-decoration: none; ">
+      <h2 style="margin-left: 0%; margin-top: 4%; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 40px;">Assignment</h2>
+  </a> 
+
+</div>
+
+
+<div style="text-align: center;">
+  <h1 style="font-size: 50px; font-weight: 700;">Submissions</h1>
+  </div>
+
+<br>
+<hr>
+
+<div class="f1" style="text-align: center; width: 100%;"><h1><div style="display: inline; color: rgb(131, 115, 115);">Assignment:</div>  {{ assign.name }}  <div style="display: inline; color: rgb(50, 170, 250);">[ {{ assign.maxmarks }} marks ]</div></h1></div>
+
+<div style="text-align: center;">
+{% if nowtime < assign.deadline %}
+<h2 style="color: rgb(0, 0, 0);">DEADLINE:  <div style="display: inline; color: crimson;">{{ assign.deadline }}</div> | <div style="display: inline; color: rgb(20, 220, 30);">RUNNING</div></h2>
+{% else %}
+<h2 style="color: rgb(0, 0, 0);">DEADLINE:  <div style="display: inline; color: crimson;">{{ assign.deadline }}</div> | <div style="display: inline; color: rgb(220, 20, 70);">OVER</div></h2>
+{% endif %}
+
+</div>
+
+
+
+<div class="f1" style="text-align: center; width: 100%;">
+    <h2><div style="display: inline; color: rgb(131, 115, 115);">Weightage:</div>  {{ assign.weightage }}% </h2>
+  
+    <div style="text-align: center;">
+      {% if GRADED %}
+          <h2 style="color: rgb(16, 221, 61);"><div style="display: inline; color: rgb(131, 115, 115);">Grading:</div>COMPLETED</h2>
+      {% else %}
+          <h2 style="color: red;" "><div style="display: inline; color: rgb(131, 115, 115);">Grading:</div> NOT COMPLETED </h2>
+      {% endif %}
+    </div>
+  </div>
+<br>
+
+<div class="container mt-5" style="background-color: rgb(255, 255, 255);">
+
+  <h1>MarkList</h1>
+  
+  <div style="text-align: center;"><h3>see below⬇️ for statistics</h3></div>
+    <div class="row">
+        <div class="col-12">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th >S/N</th>
+                    <th >Student</th>
+                    <th >File Name and Link</th>
+                    <th>Correction Status</th>
+                    <th>Feedback</th>
+                    <th>Grade</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for d in submissions %}
+                  <tr>
+                    <th>{{forloop.counter}}</th>
+                    <th>{{d.user.username}}</th>
+                    <th ><a download href="{{d.file.url}}" style="color: blueviolet;">{{d.file_name}}</a></th>
+
+                    {% if d.corrected == "YES" %}
+                    <th style="color: rgb(36, 197, 31);">{{d.corrected}}</th>
+                    {% else %}
+                    <th style="color: red;">{{d.corrected}}</th>
+                    {% endif %}
+
+                    {% if d.corrected == "YES" %}
+                      <th><a href="{%url 'feedback' course.pk assign.pk d.pk %}">View/Modify Feedback</a></th>
+                    {% else %}
+                      <th><a href="{%url 'feedback' course.pk assign.pk d.pk %}">Give Feedback</a></th>
+                    {% endif %}
+                      <th>{{ d.grade }}/{{assign.maxmarks}}</th>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+        </div>
+    </div>
+</div>
+
+<br>
+<br>
+<div class="assignment2">
+  <form method="post" enctype="multipart/form-data" action="" >
+      {% csrf_token %}
+      <h2 style="color: rgb(24, 241, 24);">Upload and give Feedback</h2>
+      {% for field in form %}
+          {{field}}
+      {% endfor %}
+          <button type="submit" class="button4">Upload</button>
+    </form>
+
+    {% if assign.feedfile.name %}
+    <h3 style="color: rgb(203, 13, 228);">previous file: <a download href = "{{ assign.feedfile.url }}">{{assign.feedfile.name}}</a></h2>
+    {% endif %}
+    <a href="{% url 'file_feedback' course.pk assign.pk %}">
+      <button type="submit" class="button9">Give Feedback</button>
+    </a>
+</div>
+
+<br>
+<br>
+<br>
+<hr>
+
+<div style="text-align: center;">
+  <h1 style="font-size: 50px; font-weight: 600;">Statistics</h1>
+</div>
+
+
+<h2>Histogram of the marks Distribution:</h2>
+<div style="display: inline; text-align: center; padding: 0px 150px;">
+<img src="data:image/png;base64,{{histv}}" alt="Histogram of Marks" width=600 height=auto  />
+<img src="data:image/png;base64,{{histm}}" alt="Histogram of Marks" width=600 height=auto />
+</div>
+
+
+<div class="f1" style="text-align: center; width: 100%;"><h2><div style="display: inline; color: rgb(131, 115, 115);">Mean:</div>  {{ mean }}  <div style="display: inline; color: rgb(50, 170, 250);">[ {{ assign.maxmarks }} ]</div></h2></div>
+<div class="f1" style="text-align: center; width: 100%;"><h2><div style="display: inline; color: rgb(131, 115, 115);">Std Deviation:</div>  {{ sd }}</h2></div>
+<div class="f1" style="text-align: center; width: 100%;"><h2><div style="display: inline; color: rgb(131, 115, 115);">Variance:</div>  {{ var }}</h2></div>
+
+
+
+{% endblock %}

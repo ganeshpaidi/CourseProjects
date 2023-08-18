@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+
+<div class="Conth" style="height: 80px; width: 60%; align-self: center; margin: 20px 20%;  border-radius: 30px;     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+
+    <a href="{% url 'dashboard' %}" class="Conth hov2 ContL" style="width: 33%; height: 100%; display: block; text-decoration: none; ">
+        <h2 style="margin-left: 0%; margin-top: 6%;">Dashboard</h2>
+    </a>
+
+    <a href="{% url 'CourseHome' %}" class="Conth hov1 ContL" style="width: 34%; height: 100%; display: block; text-decoration: none; ">
+    <h2 style="margin-left: 0%; margin-top: 6%;">Courses</h2>
+    </a>
+
+    <a href="{% url 'chat' %}" class="Conth hov3 ContL" style="width: 33%; height: 100%; display: block; text-decoration: none; ">
+      <h2 style="margin-left: 0%; margin-top: 6%;">Chat</h2>
+    </a>
+
+</div>
+
+
+<div class="Conth" style="height: 80px; width: 50%; align-self: center; margin: 20px 25%;  border-radius: 30px;     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+
+    <a href="{% url 'profile_change' %}" class="Conth hov4 ContP" style="width: 50%; height: 100%; display: block; text-decoration: none; ">
+        <h2 style="margin-left: 0%; margin-top: 6%;">Edit Profile</h2>
+    </a>
+
+    <a href="{% url 'change_pass' %}" class="Conth hov1 ContP" style="width: 50%; height: 100%; display: block; text-decoration: none; ">
+    <h2 style="margin-left: 0%; margin-top: 6%;">Change Password</h2>
+    </a>
+
+
+</div>
+
+
+
+
+
+<div style="text-align: center;">
+    <div class="profile" style="font-weight: 100;" >
+
+        <h1 style="font-family: Verdana, Geneva, Tahoma, sans-serif; color: cyan;">Your Profile</h1>
+        
+        <h2 style="display: inline;">Name:   <div style="color: cornsilk; display: inline;">{{user.username}}</div></h2><br>
+        <h2 style="display: inline;">Email:   <div style="color: cornsilk; display: inline;">{{user.email}}</div></h2><br>
+        <h2 style="display: inline;">First Name:   <div style="color: cornsilk; display: inline;">{{user.first_name}}</div></h2><br>
+        <h2 style="display: inline;">Last Name:   <div style="color: cornsilk; display: inline;">{{user.last_name}}</div></h2><br>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,225 @@
+{% extends 'base.html' %}
+
+{% block title %}Assignment{% endblock %}
+{% block H %}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+
+
+{% endblock %}
+
+{% block content %}
+
+
+
+<div class="Conth" style="height: 80px; width: 60%; align-self: center; margin: 20px 20%;  border-radius: 30px;     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+
+
+    <a href="{% url 'dashboard' %}" class="Conth hov3 ContL hov8" style="width: 30%; height: 100%; display: block; text-decoration: none;">
+        <h2 style="margin-left: 0%; margin-top: 8%;">Dashboard</h2>
+    </a>
+
+    <a href="{% url 'coursepage' course.pk %}" class="Conth hov1 ContL" style="width: 30%; height: 100%; display: block; text-decoration: none; ">
+    <h2 style="margin-left: 0%; margin-top: 5%; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 40px;" >{{ course.name }}</h2>
+    </a>
+
+    <a href="{% url 'CourseHome' %}" class="Conth hov4 ContL" style="width: 40%; height: 100%; display: block; text-decoration: none; ">
+        <h2 style="margin-left: 0%; margin-top: 6%;">Courses Home</h2>
+    </a> 
+
+</div>
+
+<br>
+<br>
+
+<div class="f1" style="text-align: center; width: 100%;"><h1><div style="display: inline; color: rgb(131, 115, 115);">Assignment:</div>  {{ assign.name }}  <div style="display: inline; color: rgb(50, 170, 250);">[ {{ assign.maxmarks }} marks ]</div></h1></div>
+
+<div style="text-align: center;">
+<h2 style="color: rgb(0, 0, 0);">DEADLINE:  <div style="display: inline; color: crimson;">{{ assign.deadline }}</div></h2>
+</div>
+
+<div class="f1" style="text-align: center; width: 100%;"><h2><div style="display: inline; color: rgb(131, 115, 115);">Weightage:</div>  {{ assign.weightage }}% </h2></div>
+
+<br>
+<br>
+
+<div class="Cbox" style="height: fit-content; width: 100%; border-width: 5px 0px; display: flex; background-color: rgb(255, 255, 255);">
+
+    <div class="Cbox" style="width: 80%; height: auto; text-align: center;">
+            <br>
+            {% if assign.file.name %}
+                <h2>Problem File: <div style="display: inline;">
+                    <a download href="{{assign.file.url}}" style="color: rgb(184, 41, 240);">
+                        {{ assign.file_name }}
+                    </a>
+                    </div>
+                </h2>
+            {% endif %}
+            <br>
+            {% if assign.link != '' %}
+                <h2>Problem Link: <div style="display: inline;">
+                    <a href="{{assign.link}}" style="color: rgb(241, 38, 38);">
+                        here
+                    </a>
+                    </div>
+                </h2>
+            {% endif %}
+            <hr style="height: 5px;">
+            <h1 style="font-family: Verdana, Geneva, Tahoma, sans-serif;">Description</h1>
+            <div class = "dis" style="text-align: center; font-style: normal; color: black; font-size: 22px;">
+                <p>{{ assign.statement|linebreaks }}</p>
+                <br>
+            </div>
+    </div>
+
+    <div class="Cbox" style="width: 20%; height: auto; border-left-width: 5px ; background-color: rgb(172, 236, 186);">
+
+        <a href = "{% url 'participants' course.pk %}" class="sideheadfont font1 hov5" style="font-size:x-large; padding: 10px; border-width: 0px 5px 5px 5px; margin-bottom: 5px; display: block; text-decoration: none; font-size: x-large;">
+            <h2 style="margin: 0px; font-weight: 900;">Participants</h2>
+        </a>
+
+        <a href = "{% url 'grades' course.pk %}" class="sideheadfont font1 hov9" style="font-size:x-large; padding: 10px; border-width: 5px 5px 5px 5px; display: block; text-decoration: none; margin-bottom: 5px; font-size: x-large;">
+            <h1 style="margin: 0px; font-weight: 900;">Grades</h1>
+        </a>
+
+        <div class="sideheadfont font5 hov6">
+            <h1  style="margin-top: 60px;">Forums</h1>
+        </div>
+
+
+        {% for forum in forums %}
+            <a href = "{% url 'forum' course.pk forum.pk %}" class="sideheadfont font1 hov10 hov12" style="font-size:x-large; padding: 10px; border-width: 5px 5px 5px 5px; display: block; text-decoration: none; margin-bottom: 5px; border-color:black;">
+                <h2 style="margin: 0px; font-size: 40px; font-weight: 900; color: black;">{{ forum.name }}</h2>
+            </a>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+
+
+<br>
+<br>
+
+{% if instruct or IsTA %}
+<div style="text-align: center">
+    <div style="display: inline; color: rgb(58, 53, 53);"><h4>Total Students: {{ students|length }}</h4></div>
+    <h1 >{{ submissions|length }} Submitted </h1>
+    <a href="{% url 'submissions' course.pk assign.pk %}">
+        <button class="button4" style="font-size: 25px;"> View Submissions</button>
+    </a>
+    <br>
+    <br>
+    <br>
+</div>
+{% else %}
+
+
+{% if deadline > nowtime %}
+
+<div class="assignment2">
+    <form method="post" enctype="multipart/form-data" action="" >
+        {% csrf_token %}
+        <h2 style="color: crimson;">Submit File:</h2>
+        {% for field in form %}
+            {{field}}
+        {% endfor %}
+        {% if submitted %}
+            <button type="submit" class="button4">Re-Submit</button>
+        {% else %}
+            <button type="submit" class="button4">Submit</button>
+        {% endif %}
+      </form>
+
+</div>
+
+{% endif %}
+
+
+<h1 style="text-align: center;">Status</h1>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th><h2>Submission Status</h2></th>
+                    {% if submitted %}
+                        <th><h2 style="color: rgb(31, 238, 24);">SUBMITTED FOR GRADING</h2></th>
+                    {% else %}
+                        <th><h2 style="color: rgb(236, 55, 55);">Not Submitted</h2></th>
+                    {% endif %}
+                  </tr>
+
+
+                  <tr>
+                    <th><h2>Grading Status</h2></th>
+
+                    {% if not submitted %}
+                        <th><h2 style="color: rgb(235, 38, 38);">Not Graded</h2></th>
+                    {% else %}
+                        {% if mysub.corrected == "YES" %}
+                        <th><h2 style="color: rgb(109, 109, 255);">Graded</h2></th>
+                        {% else %}
+                        <th><h2 style="color: rgb(235, 38, 38);">Not Graded</h2></th>
+                        {% endif %}
+                    {% endif %}
+                  </tr>
+
+
+                  <tr>
+                      <th><h2>Last Modified</h2></th>
+                      {% if not submitted %}
+                        <th>-----</th>
+                      {% else %}
+                        <th><h2>{{ mysub.sub_time }}</h2></th>
+                      {% endif %}
+
+                  </tr>
+
+                  <tr>
+                      <th><h2>Submitted File</h2></th>
+                      {% if not submitted %}
+                        <th>-----</th>
+                      {% else %}
+                        <th><h2><a download href="{{mysub.file.url}}" style="color: rgb(157, 64, 243);">{{ mysub.file_name }}</a></h2></th>
+                      {% endif %}
+
+                  </tr>
+
+                  <tr>
+                    <th><h2>Grade:</h2></th>
+                    {% if not submitted %}
+                      <th>-----</th>
+                    {% else %}
+                        <th><h2>{{ mysub.grade }}/{{assign.maxmarks }}</h2></th>
+                    {% endif %}
+                  </tr>
+
+                  <tr>
+                      <th><h2>Feedback:</h2></th>
+                      {% if not submitted %}
+                        <th>-----</th>
+                      {% else %}
+                        <th><h4>{{ mysub.feedback }}</h4></th>
+                      {% endif %}
+                  </tr>
+
+                </tbody>
+              </table>
+        </div>
+    </div>
+</div>
+
+
+{% endif %}
+
+{% endblock %}

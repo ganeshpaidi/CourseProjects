@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+
+{% block title %}Participants{% endblock %}
+
+{% block H %}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+
+{% endblock %}
+
+{% block content %}
+
+
+
+<div class="Conth" style="height: 80px; width: 60%; align-self: center; margin: 20px 20%;  border-radius: 30px;     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+
+
+    <a href="{% url 'dashboard' %}" class="Conth hov3 ContL hov8" style="width: 30%; height: 100%; display: block; text-decoration: none; ">
+        <h2 style="margin-left: 0%; margin-top: 8%;">Dashboard</h2>
+    </a>
+
+    <a href="{% url 'coursepage' course.pk %}" class="Conth hov1 ContL" style="width: 30%; height: 100%; display: block; text-decoration: none; ">
+    <h2 style="margin-left: 0%; margin-top: 5%; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 40px;" >{{ course.name }}</h2>
+    </a>
+
+    <a href="{% url 'CourseHome' %}" class="Conth hov4 ContL" style="width: 40%; height: 100%; display: block; text-decoration: none; ">
+        <h2 style="margin-left: 0%; margin-top: 6%;">Courses Home</h2>
+    </a> 
+
+</div>
+
+
+<div style="text-align: center;">
+  <h1 style="font-size: 40px;">Participants</h1>
+  </div>
+
+
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th >S/N</th>
+                    <th >Name</th>
+                    <th >Role</th>
+                    {% if IsINS == 'YES' %}
+                    <th></th>
+                    {% endif %}
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                      <tr>
+                        <th>1</th>
+                        {% if user.username == Ins.username %}
+                        <th><h4 style="color: rgb(240, 149, 29);">{{Ins.username}}</h4></th>
+                        {% else %}
+                        <th><h4>{{Ins.username}}</h4></th>
+                        {% endif %}
+                        <th><h4>INSTRUCTOR</h4></th>
+                      </tr>
+                      <tr>
+                        <th></th>
+                        <th><h1></h1></th>
+                        <th><h1></h1></th>
+                        <th></th>
+                      </tr>
+                      {% for d in TAs %}
+                      <tr>
+                        <th>{{forloop.counter}}</th>
+                        {% if user.username == d.username %}
+                        <th><h4 style="color: rgb(28, 241, 38);">{{d.username}}</h4></th>
+                        {% else %}
+                        <th><h4>{{d.username}}</h4></th>
+                        {% endif %}
+                        <th><h4>TA</h4></th>
+                        {% if IsINS == 'YES' %}
+                        <th><a href = "{% url 'remove' course.pk d.pk %}"><h4>remove</h4></a></th>
+                        {% endif %}
+                        {% if IsINS == 'YES' %}
+                        <th><a href = "{% url 'TA_settings' course.pk d.pk %}" style="color: rgb(230, 51, 51);"><h4>Modify Permissions</h4></a></th>
+                        {% endif %}
+                      </tr>
+                      {% endfor %}
+                      <tr>
+                        <th></th>
+                        <th><h1></h1></th>
+                        <th><h1></h1></th>
+                        <th></th>
+                      </tr>
+                        {% for d in Students %}
+                        <tr>
+                            <th>{{forloop.counter}}</th>
+                            {% if user.username == d.username %}
+                            <th><h4 style="color: rgb(54, 120, 241);">{{d.username}}</h4></th>
+                            {% else %}
+                            <th><h4>{{d.username}}</h4></th>
+                            {% endif %}
+                            <th><h4>STUDENT</h4</th>
+                            {% if IsINS == 'YES' %}
+                            <th><a href = "{% url 'remove' course.pk d.pk %}"><h4>remove</h4></a></th>
+                            {% endif %}
+                        </tr>
+                      {% endfor %}
+                      <tr>
+                        <th></th>
+                        <th><h1></h1></th>
+                        <th><h1></h1></th>
+                        <th></th>
+                      </tr>
+                </tbody>
+              </table>
+        </div>
+    </div>
+</div>
+
+
+{% if IsINS == 'YES' or TA_Perm == 'YES' %}
+
+  <form method="post">
+      {% csrf_token %}
+
+  {% for field in form %}
+      <div style="text-align: center; margin: 20px 5% 5px;">
+      {{field}}
+      </div>
+  {% endfor %}
+
+  <div style="text-align: center; margin: 0px;">
+      <button type="submit" class="B1 button4" style="text-align: center;">Add to Course</button>
+  </div>
+
+  </form>
+{% endif %}
+
+
+{% endblock %}

@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+
+{% block title %}Forum{% endblock %}
+
+{% block content %}
+
+
+<div class="Conth" style="height: 80px; width: 60%; align-self: center; margin: 20px 20%;  border-radius: 30px;     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+
+
+    <a href="{% url 'dashboard' %}" class="Conth hov3 ContL hov8" style="width: 30%; height: 100%; display: block; text-decoration: none; ">
+        <h2 style="margin-left: 0%; margin-top: 8%;">Dashboard</h2>
+    </a>
+
+    <a href="{% url 'coursepage' course.pk %}" class="Conth hov1 ContL" style="width: 30%; height: 100%; display: block; text-decoration: none; ">
+    <h2 style="margin-left: 0%; margin-top: 5%; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 40px;" >{{ course.name }}</h2>
+    </a>
+
+    <a href="{% url 'CourseHome' %}" class="Conth hov4 ContL" style="width: 40%; height: 100%; display: block; text-decoration: none; ">
+        <h2 style="margin-left: 0%; margin-top: 6%;">Courses Home</h2>
+    </a> 
+
+</div>
+
+
+<div style="text-align: center; font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; font-size: x-large;">
+    <h1 style="color:deeppink ; text-shadow: 2px 4px 3px rgba(0,0,0,0.3);;">Forum: {{Forum.name }}</h1>
+</div>
+
+
+
+{% if user.username  == Ins.username %}
+    <div class="Conth" style="height: 100px; width: 20%; align-self: center; margin: 20px 10% 10px 70%;  border-radius: 20px;     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+
+        {% if Forum.enabled == 'YES' %}
+            <a href="{% url 'disable' course.pk Forum.pk %}" class="Conth hov3 ContL hov20" style="width: 100%; height: 100%; display: block; text-decoration: none; ">
+                <h2 style="margin-left: 0%; margin-top: 8%; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 40px;">Disable</h2>
+            </a>
+        {% else %}
+            <a href="{% url 'disable' course.pk Forum.pk %}" class="Conth hov3 ContL hov21" style="width: 100%; height: 100%; display: block; text-decoration: none; ">
+                <h2 style="margin-left: 0%; margin-top: 8%; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 40px;">Enable</h2>
+            </a>
+        {% endif %}
+
+
+    </div>
+{% endif %}
+
+
+
+<div class="Cbox" style="height: fit-content; width: 100%; border-width: 5px 0px; display: flex; background-color: rgb(220, 234, 247);">
+
+
+  <div class="Cbox" style="width: 100%; height: auto; ">
+    
+    {% for msg in msgs %}
+
+        {% if msg.user.username == user.username %}
+            <div class="Conth hov13" style="height: fit-content; width: 60%; align-self: center; margin: 20px 5% 20px 35%;  border-radius: 30px;   border: 5px solid rgb(24, 177, 248);  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+
+              <div class="Conth hov13" style="width: 80%; height: 100%;">
+                <div class="msg">
+                  <p>{{ msg.message|linebreaks }}</p>
+                  </div>
+              </div>
+
+              <div class="Conth hov14" style="width: 20%; height: auto;">
+                <h4>  {{ msg.time }}</h4>
+              </div>
+          
+            </div>
+        {% else %}
+            {% if msg.user.username == Ins.username %}
+                <div class="Conth hov15" style="height: fit-content; width: 60%; align-self: center; margin: 20px 35% 20px 5%;  border-radius: 30px;   border: 8px solid rgb(236, 52, 52);  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+
+
+                <div class="Conth hov15" style="width: 80%; height: 100%;">
+                    <div class="msg">
+                    <p>{{ msg.message|linebreaks }}</p>
+                    </div>
+                </div>
+
+                <div class="Conth hov16" style="width: 20%; height: auto;">
+                    <h4>  {{ msg.user.username }}<br>{{ msg.time }}</h4>
+                </div>
+            
+                </div>
+            {% elif IsTA == 'YES' %}
+                <div class="Conth hov17" style="height: fit-content; width: 60%; align-self: center; margin: 20px 35% 20px 5%;  border-radius: 30px;   border: 5px solid rgb(44, 241, 26);  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+
+
+                    <div class="Conth hov17" style="width: 80%; height: 100%;">
+                        <div class="msg">
+                        <p>{{ msg.message|linebreaks }}</p>
+                        </div>
+                    </div>
+
+                    <div class="Conth hov18" style="width: 20%; height: auto;">
+                        <h4>  {{ msg.user.username }}<br>{{ msg.time }}</h4>
+                    </div>
+                
+                </div>
+            {% else %}
+                <div class="Conth hov13" style="height: fit-content; width: 60%; align-self: center; margin: 20px 35% 20px 5%;  border-radius: 30px;   border: 5px solid rgb(24, 177, 248);  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+
+                    <div class="Conth hov13" style="width: 80%; height: 100%;">
+                    <div class="msg">
+                        <p>{{ msg.message|linebreaks }}</p>
+                        </div>
+                    </div>
+    
+                    <div class="Conth hov14" style="width: 20%; height: auto;">
+                    <h4> {{ msg.user.username }}<br> {{ msg.time }}</h4>
+                    </div>
+                
+                </div>
+            {% endif %}
+
+        {% endif %}
+
+    {% endfor %}
+
+  </div>
+
+
+</div>
+
+
+
+{% if Forum.enabled == 'YES' %}
+
+    <form method="post">
+        {% csrf_token %}
+
+    {% for field in form %}
+        <div style="text-align: center; margin: 30px;">
+        {{field}}
+        </div>
+    {% endfor %}
+
+    <div style="text-align: center; margin: 30px;">
+        <button type="submit" class="B1 button4" style="text-align: center;">POST</button>
+    </div>
+
+    </form>
+
+{% elif user.username == Ins.username or IsTA == 'YES' %}
+    <form method="post">
+        {% csrf_token %}
+
+    {% for field in form %}
+        <div style="text-align: center; margin: 30px;">
+        {{field}}
+        </div>
+    {% endfor %}
+
+    <div style="text-align: center; margin: 30px;">
+        <button type="submit" class="B1 button4" style="text-align: center;">POST</button>
+    </div>
+
+    </form>
+
+{% endif %}
+
+<br>
+<br>
+    <div class="Conth" style="height: 80px; width: 60%; align-self: center; margin: 20px 20%;  border-radius: 30px;     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+
+
+        <a href="#" class="Conth hov3 ContL hov8" style="width: 33%; height: 100%; display: block; text-decoration: none; background-color:rgb(24, 177, 248); ">
+            <h2 style="margin-left: 0%; margin-top: 8%; color: rgb(0, 0, 0);">Student</h2>
+        </a>
+
+        <a href="#" class="Conth hov1 ContL" style="width: 34%; height: 100%; display: block; text-decoration: none;  background-color: red">
+        <h2 style="margin-left: 0%; margin-top: 8%; color: rgb(0, 0, 0);">Instructor</h2>
+        </a>
+
+        <a href="#" class="Conth hov4 ContL" style="width: 40%; height: 100%; display: block; text-decoration: none;  background-color: rgb(44, 241, 26)">
+            <h2 style="margin-left: 0%; margin-top: 6%; color: rgb(0, 0, 0);">TA</h2>
+        </a> 
+
+    </div>
+
+
+{% endblock %}
